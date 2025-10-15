@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Encryptor · Vigenère</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; margin: 0; padding: 24px; color: #111; background: #fafafa; }
+    h1 { margin: 0 0 12px; }
+    textarea, input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; }
+    textarea { min-height: 220px; }
+    .row { display: grid; gap: 12px; grid-template-columns: 1fr 180px; margin: 12px 0; }
+    .btn { padding: 12px; border: 1px solid #111; background: #111; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 700; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace; white-space: pre-wrap; word-break: break-word; }
+    .card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .hint { color: #666; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>Encryptor · Vigenère</h1>
+  <p class="hint">Use <strong>a slug do link</strong> como chave (ex.: <code>luz-de-primavera</code>). O resultado você cola no <code>index.html</code>.</p>
+
+  <div class="card">
+    <label>Chave (slug / nome da página)</label>
+    <input id="key" placeholder="ex.: luz-de-primavera" />
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <label>Sua carta (texto em português, pode ser longo):</label>
+    <textarea id="plain" placeholder="Cole aqui seu texto de aniversário..."></textarea>
+  </div>
+
+  <div class="row">
+    <button class="btn" id="btn">Cifrar</button>
+    <button class="btn" id="btnCopy" style="background:#fff;color:#111">Copiar Texto Cifrado</button>
+  </div>
+
+  <div class="card">
+    <label>Texto Cifrado:</label>
+    <div id="out" class="mono"></div>
+  </div>
+
+  <script>
+    const normalize = (s) => s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .replace(/[^a-z0-9]/g, '');
+    const onlyLetters = (s) => s.replace(/[^a-z]/gi, '');
+
+    function vigenereEncrypt(plain, key) {
+      const aCode = 'a'.charCodeAt(0);
+      const cleanKey = onlyLetters(normalize(key));
+      if (!cleanKey) return plain;
+      let ki = 0; let out = '';
+      for (const ch of plain) {
+        const code = ch.toLowerCase().charCodeAt(0);
+        if (code >= 97 && code <= 122) {
+          const k = cleanKey.charCodeAt(ki % cleanKey.length) - aCode;
+          const c = ((code - aCode + k) % 26) + aCode;
+          const enc = String.fromCharCode(c);
+          out += (ch === ch.toUpperCase()) ? enc.toUpperCase() : enc;
+          ki++;
+        } else {
+          out += ch; // mantém espaços e pontuação
+        }
+      }
+      return out;
+    }
+
+    document.getElementById('btn').addEventListener('click', ()=>{
+      const key = document.getElementById('key').value.trim();
+      const plain = document.getElementById('plain').value;
+      const out = vigenereEncrypt(plain, key);
+      document.getElementById('out').textContent = out;
+    });
+
+    document.getElementById('btnCopy').addEventListener('click', async ()=>{
+      const txt = document.getElementById('out').textContent;
+      try { await navigator.clipboard.writeText(txt); alert('Texto cifrado copiado!'); } catch(e){ alert('Copie manualmente.'); }
+    });
+  </script>
+</body>
+</html>

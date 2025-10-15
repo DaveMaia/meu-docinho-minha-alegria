@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz-Aniversario_meu-docinho-minha-alegria</title>
+  <!-- 🔑 A pista é o NOME DA PÁGINA (slug).A senha é "qyn-hoowrbh-qizve-ueigdwe" (sem aspas S2 "eu-te-amo" ). -->
+  <meta name="description" content="Uma pequena celebração, feita com muito amor." />
+  <style>
+    :root {
+      --bg1: #0e0e10; /* base escura */
+      --bg2: #1b1b2a; /* gradiente */
+      --accent: #ffd166; /* dourado suave */
+      --accent2: #ef476f; /* rosa vivo */
+      --accent3: #06d6a0; /* verde água */
+      --text: #f5f5f7;
+      --muted: #c7c7d0;
+      --card: rgba(255, 255, 255, 0.06);
+      --glass: rgba(255,255,255,0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% 10%, #1f2030 0%, transparent 60%),
+                  radial-gradient(1000px 600px at 80% 0%, #2a1b2a 0%, transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x: hidden;
+    }
+
+    /* Partículas de brilho sutil */
+    .sparkle { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .sparkle span {
+      position: absolute; width: 2px; height: 2px; background: white; opacity: .75; border-radius: 50%;
+      box-shadow: 0 0 6px 2px rgba(255,255,255,.3);
+      animation: float 8s linear infinite;
+    }
+    @keyframes float { from { transform: translateY(0) } to { transform: translateY(-120vh) } }
+
+    /* Container principal */
+    .wrap { min-height: 100%; display: grid; place-items: center; padding: 48px 20px; position: relative; z-index: 2; }
+
+    .card {
+      width: 100%; max-width: 860px; background: var(--glass); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 28px; box-shadow: 0 10px 40px rgba(0,0,0,.35);
+      position: relative; overflow: hidden;
+    }
+
+    .header {
+      display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap; text-align: center;
+    }
+
+    .title {
+      font-size: clamp(28px, 5vw, 54px); font-weight: 800; letter-spacing: .5px; line-height: 1.05;
+      background: linear-gradient(90deg, var(--accent), #ffe29a, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 3px 10px rgba(255,209,102,.15));
+    }
+    .subtitle { color: var(--muted); font-size: clamp(14px, 2vw, 18px); }
+
+    .confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+
+    .panel {
+      margin-top: 24px; display: grid; gap: 14px; grid-template-columns: 1fr; align-items: start;
+    }
+
+    .hint {
+      font-size: 14px; color: var(--muted); text-align: center; margin-top: 4px;
+    }
+
+    .cipher {
+      margin-top: 18px; background: var(--card); border: 1px dashed rgba(255,255,255,0.15); border-radius: 16px; padding: 16px; white-space: pre-wrap;
+      word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      line-height: 1.5; color: #e6e6ff; max-height: 40vh; overflow: auto;
+    }
+
+    .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .input, .btn {
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: var(--text); padding: 12px 14px; font-size: 16px; outline: none;
+    }
+    .input { width: 100%; }
+    .btn { cursor: pointer; font-weight: 600; }
+    .btn:hover { filter: brightness(1.08); }
+
+    .reveal {
+      margin-top: 20px; background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 20px;
+      line-height: 1.7; font-size: 18px;
+    }
+    .hidden { display: none; }
+
+    .footer { margin-top: 24px; text-align: center; color: var(--muted); font-size: 13px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: var(--muted);
+    }
+
+    /* Balões sutis */
+    .balloon { position: fixed; bottom: -120px; width: 26px; height: 34px; border-radius: 50% 50% 45% 55% / 60% 60% 40% 40%;
+      opacity: .9; filter: drop-shadow(0 6px 20px rgba(0,0,0,.2)); z-index: 1; }
+    .string { position: absolute; top: 32px; left: 13px; width: 2px; height: 90px; background: rgba(255,255,255,.25); }
+
+    @media (min-width: 700px) {
+      .panel { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti-canvas" id="confetti"></canvas>
+  <div class="sparkle" id="sparkle"></div>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <h1 class="title" id="heroTitle">Feliz Aniversário ✨</h1>
+        <p class="subtitle">Hoje o mundo ganhou você. E isso sempre merecerá ser celebrado.</p>
+      </div>
+
+      <div class="panel">
+        <div>
+          <div class="cipher" id="cipherBox">Tsdh c ocakc owzwleee srqs gq wlqnw pva hwpê kenevu umlq — i yvgc é, xnyo yqz, bma qsxdi dq qcooizr.
+
+Zimvr, uesei geqvqvmáuwq, mh xiqzvh te oex rtga uoh tqafl amqf ko qfi lcwrqw kxs ocejvmu bb pawebiis cyy vs rmeksy. Yhps tp hgi cm bixdçc fw dbs hwpê maz nsszoo: pmlhçãc. Xwpê é bam mfwécip hk súasapu popan hdavghndz tgii navnh ewiakc a urb dil joti rgmxrgq. Éa n sil unainlp wlm afvuysuan h xmvrsa dz qkl kaeivus hznnwx, phtidz i kjkuds; ém d dtmflbçm yhl orretzha a gurg fi zpbti zlntp wó vfz ejmmwwt.
+
+Mh hryqev sef nkzbo pi wxwfie kc ccr é civz: tkjaomw, cgskif, ksfiyoes, mmiyqntsm.... Yceê vhuqm xnzsa ltxvasmhu ssnw dbs uucvrtl. Zutê lá afihçãr, ggvgl s fznusfzvsr. M nqwmh aqdvtszbb,  te lpqhii qgig hi uwh wcd jnpxo oe irzabeçu, ticvqv aq mfxueçz — i wlmm qy jrguw flf ccnudo xi kekoxli h gcqb ko pmslnstzg.
+
+Fjrukugc rwe zsd — m glr sthu — dmu mflluq mz kwma ql textkjbapi, y psw wharawe ke mzxomição zsm gwca ql wzarnurlrçg. Gwr dml fcoqtv egiako nlhg girqgcd agzrjsd cz zorcmyf m, caq u psuun uofcehlioejv, ue xigefcz qv egm shz sprzzlo. Hswê ps gvfpbm i olleke jv vão osgssvqe jcy vvuguéx, hk jó krqwwhf. Xwpê ts qvfpna l exkm dq wyu wpbrpfa art peomx cqcqrçu qso aruhuz pblpl; qk cmmnvu gs scr uãc bzrjisz jgqmr a uoh ag unjvgkn zó pace sv mnoecaot.
+
+Mh jsxmoyo sfe oebexmaêqqki r wsdacpcácte, wlm tq tyuakbrt jqz nsém; spy ifzaçãa uoh oewyos; q i svrça dmrvvcusmd ewm, zlgyw flm pciizaad tlrjcz ahrm, xevva byk mwcê é yycwc oivz ra yhl um csykw lurxr. Qgtrifa if lstcirra dmw mxou kbugfmyhções aexkqcgpuusu — bbkoe idbellw ifvqgmmwou yhl jakê pvnsevazc caq plhótqnz, hdwclços p gud i fé cyy ws oiaaéa qu cé. Jelpfxf w mahi fcow ivqê mbehvedwg r dipe: wra jwalgfqqhde, aeooãw e gq mhbuw ql xgagpça qfi sv lá eetyuopçi.
+
+Algfm avvo lru, umsqni tig i iprm br kevzpbr, uuxxcszkknkc, a jrt qup zutê msbefko: eizpbtwf xue di gszey ri wsoxb jsdbb, kesnetjw qgi hãr qwtch s smaae qfi yrje fi ghfgkry. Rqarqo qfi bfkê sq zymo ewz vg ymhz olssy, emm bsl xa umtbbpw n tenzw: irxal, fiqwvi r yodi.
+
+Fl eu ayjvasq gioceie la gun mradi u hce hswê é soti zpa, emepa idxu: mwcê é a xcsc fm clgewn xue qef f uuzhi yonme toua n wenl.
+
+Jkcqz mrcystaáepc, Ecnue. Qfi g jca xyt fcpbvuiq nvyme — p uav mu qwnhxc xby dqzgv pace ggzezhyu qqu rso. Qc nto vzgê.</div>
+          <p class="hint">🔒 Dica: <em>a pista está nesta página</em> => bjus.</p>
+        </div>
+        <div>
+          <div class="row">
+            <input class="input" id="keyInput" placeholder="Digite a hash criptográfica" />
+            <button class="btn" id="btnOpen">Desvendar</button>
+          </div>
+          <div class="reveal hidden" id="revealBox"></div>
+          <div class="footer">
+            <span class="pill">Feito com muito carinho · Sem economizar dedicação</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================
+       🔐 Cifra Vigenère (PT/BR)
+       ========================== */
+    const normalize = (s) => s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .replace(/[^a-z0-9]/g, '');
+
+    const onlyLetters = (s) => s.replace(/[^a-z]/gi, '');
+
+    function vigenereDecrypt(cipher, key) {
+      const cleanKey = onlyLetters(normalize(key));
+      if (!cleanKey) return '';
+      const aCode = 'a'.charCodeAt(0);
+      let ki = 0; let out = '';
+      for (const ch of cipher) {
+        const code = ch.toLowerCase().charCodeAt(0);
+        if (code >= 97 && code <= 122) {
+          const k = cleanKey.charCodeAt(ki % cleanKey.length) - aCode;
+          const p = (26 + (code - aCode - k)) % 26;
+          const dec = String.fromCharCode(aCode + p);
+          out += (ch === ch.toUpperCase()) ? dec.toUpperCase() : dec;
+          ki++;
+        } else {
+          out += ch; // mantém espaços e pontuação
+        }
+      }
+      return out;
+    }
+
+    /* 🔎 Se o usuário não digitar, usamos a slug do caminho como tentativa automática */
+    function deriveKeyFromPath() {
+      const path = window.location.pathname.replace(/\/$/, '');
+      const last = path.split('/').filter(Boolean).pop() || document.title || '';
+      return last;
+    }
+
+    /* ==========================
+       🎉 Confete + Balões + Brilhos
+       ========================== */
+    // Confete minimalista
+    (function confetti(){
+      const c = document.getElementById('confetti');
+      const ctx = c.getContext('2d');
+      let W, H; let pieces = [];
+      function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+      window.addEventListener('resize', resize); resize();
+      const colors = ['#ffd166','#ef476f','#06d6a0','#118ab2','#ffe29a'];
+      for (let i=0;i<180;i++) pieces.push({
+        x: Math.random()*W,
+        y: Math.random()*H - H,
+        r: Math.random()*8+4,
+        s: Math.random()*2+1,
+        a: Math.random()*Math.PI,
+        c: colors[Math|((Math.random()*colors.length))]
+      });
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        pieces.forEach(p=>{
+          p.y += p.s; p.x += Math.sin(p.a+=0.01);
+          if(p.y>H) { p.y = -10; p.x = Math.random()*W; }
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle = p.c; ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // Brilhos sutis
+    (function sparkles(){
+      const box = document.getElementById('sparkle');
+      const count = 60;
+      for (let i=0;i<count;i++) {
+        const s = document.createElement('span');
+        s.style.left = Math.random()*100 + 'vw';
+        s.style.top = (Math.random()*100 + 20) + 'vh';
+        s.style.animationDelay = (Math.random()*8) + 's';
+        s.style.opacity = (Math.random()*0.6 + 0.2).toFixed(2);
+        box.appendChild(s);
+      }
+    })();
+
+    // Balões
+    ;(function balloons(){
+      const colors = ['#ffd166','#ef476f','#06d6a0','#118ab2'];
+      for (let i=0;i<12;i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        const c = colors[i % colors.length];
+        b.style.background = c;
+        b.style.left = Math.random()*100 + 'vw';
+        b.style.animation = `rise ${8+Math.random()*6}s linear ${Math.random()*4}s infinite`;
+        const str = document.createElement('div');
+        str.className = 'string'; b.appendChild(str);
+        document.body.appendChild(b);
+      }
+      const style = document.createElement('style');
+      style.textContent = `@keyframes rise { from { transform: translateY(0) } to { transform: translateY(-130vh) } }`;
+      document.head.appendChild(style);
+    })();
+
+    /* ==========================
+       🗝️ Interação
+       ========================== */
+    const cipherBox = document.getElementById('cipherBox');
+    const keyInput  = document.getElementById('keyInput');
+    const revealBox = document.getElementById('revealBox');
+    const btnOpen   = document.getElementById('btnOpen');
+
+    function tryAuto() {
+      const candidate = deriveKeyFromPath();
+      if (!candidate) return;
+      const dec = vigenereDecrypt(cipherBox.textContent.trim(), candidate);
+      if (dec && /[\p{Letter}]{12,}/u.test(dec)) reveal(dec);
+    }
+
+    function reveal(text) {
+      revealBox.classList.remove('hidden');
+      revealBox.innerHTML = '';
+      // animação "digitando"
+      let i = 0; const speed = 12; // ms por char
+      const timer = setInterval(()=>{
+        revealBox.textContent = text.slice(0, ++i);
+        if (i >= text.length) clearInterval(timer);
+      }, speed);
+      popConfettiPulse();
+    }
+
+    function popConfettiPulse(){
+      // pequeno "reforço" de confete ao desbloquear
+      const c = document.getElementById('confetti');
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      for (let i=0;i<60;i++) {
+        const x = W/2 + (Math.random()-0.5)*200;
+        const y = H/2 + (Math.random()-0.5)*120;
+        ctx.beginPath(); ctx.arc(x, y, Math.random()*8+2, 0, Math.PI*2);
+        ctx.fillStyle = ['#ffd166','#ef476f','#06d6a0','#118ab2'][i%4];
+        ctx.fill();
+      }
+    }
+
+    btnOpen.addEventListener('click', ()=>{
+      const key = keyInput.value.trim();
+      const dec = vigenereDecrypt(cipherBox.textContent.trim(), key);
+      if (!dec || dec === cipherBox.textContent.trim()) {
+        revealBox.classList.remove('hidden');
+        revealBox.textContent = '⚠️ Chave incorreta. Dica: Talvez precise olhar um pouco mais para cima enquanto pensam.';
+      } else { reveal(dec); }
+    });
+
+    // dica automática com a slug, se for igual ao <title>
+    window.addEventListener('load', ()=>{
+      const title = document.title.trim();
+      const hero = document.getElementById('heroTitle');
+      hero.innerHTML = 'Feliz Aniversário <span style="opacity:.75">·</span> <span style="font-size:.65em; color: var(--accent)">★</span>';
+      // tenta desbloquear usando a slug se o usuário acessou pelo link correto
+      tryAuto();
+    });
+  </script>
+</body>
+</html>
